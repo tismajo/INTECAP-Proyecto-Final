@@ -1,10 +1,35 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <title>Vehículos Estacionados</title>
     <meta charset="UTF-8">
-    <title>Parqueados</title>
 </head>
 <body>
+
+<h1>Vehículos Registrados</h1>
+
+<ul>
+    <li th:each="vehicle : ${vehicles}">
+        <p><strong>Placa:</strong> <span th:text="${vehicle.vPlate}"></span></p>
+        <p><strong>Tipo:</strong> <span th:text="${vehicle.vType.vt_name}"></span></p>
+        <p><strong>Color:</strong> <span th:text="${vehicle.vColor.c_name}"></span></p>
+        <p><strong>Hora de Entrada:</strong> <span th:text="${#temporals.format(vehicle.entranceTime, 'yyyy-MM-dd HH:mm')}"></span></p>
+        <p>
+            <strong>Hora de Salida:</strong>
+            <span th:text="${vehicle.exitTime != null ? #temporals.format(vehicle.exitTime, 'yyyy-MM-dd HH:mm') : '---'}"></span>
+        </p>
+
+        <form th:if="${vehicle.exitTime == null}"
+              th:action="@{/park-station/mark-exit/{id}(id=${vehicle.id})}"
+              method="post">
+            <button type="submit">Marcar salida</button>
+        </form>
+
+        <hr/>
+    </li>
+</ul>
+
+<a href="/park-station/add">Agregar nuevo vehículo</a>
 
 </body>
 </html>

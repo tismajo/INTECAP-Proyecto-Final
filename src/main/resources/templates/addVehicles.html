@@ -1,10 +1,33 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Nuevo vehículo</title>
+    <title>Agregar Vehículo</title>
 </head>
 <body>
+<h1>Nuevo Vehículo</h1>
+<form th:action="@{/park-station/new-vehicle-form}" th:object="${vehicle}" method="post">
 
+    <label>Placa:</label>
+    <input type="text" th:field="*{vPlate}" maxlength="6" required/>
+    <br/>
+
+    <label>Tipo:</label>
+    <select th:field="*{vType}" required>
+        <option th:each="type : ${types}"
+                th:value="${type.id}"
+                th:text="${type.vt_name}"></option>
+    </select>
+    <br/>
+
+    <label>Color:</label>
+    <select th:field="*{vColor}" required>
+        <option th:each="color : ${colors}"
+                th:value="${color.id}"
+                th:text="${color.c_name}"></option>
+    </select>
+    <br/>
+
+    <button type="submit">Guardar</button>
+</form>
 </body>
 </html>

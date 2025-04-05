@@ -5,21 +5,20 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "colors")
 public class ColorModel {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer c_id;
+    @Column(name = "c_id")
+    private Integer id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "c_name", nullable = false, unique = true)
     private String c_name;
 
-    // Getters y setters
-    public Integer getC_id() {
-        return c_id;
+    public Integer getId() {
+        return id;
     }
 
-    public void setC_id(Integer c_id) {
-        this.c_id = c_id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getC_name() {

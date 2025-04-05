@@ -1,18 +1,38 @@
 package com.INTECAP.finalProject.Model;
 
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "vehicles")
 public class VehicleModel {
-    private String vType;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name = "v_plate", length = 6, nullable = false, unique = true)
     private String vPlate;
-    private Integer vColor;
+
+    @ManyToOne
+    @JoinColumn(name = "v_color")
+    private ColorModel vColor;
+
+    @ManyToOne
+    @JoinColumn(name = "v_type")
+    private TypeModel vType;
+
+    @Column(name = "entrance_time", nullable = false)
     private LocalDateTime entranceTime;
+
+    @Column(name = "exit_time")
     private LocalDateTime exitTime;
 
-    public VehicleModel(String vType, String vPlate, Integer vColor, LocalDateTime entranceTime, LocalDateTime exitTime) {
-        this.vType = vType;
+    public VehicleModel(Integer id, String vPlate, ColorModel vColor, TypeModel vType, LocalDateTime entranceTime, LocalDateTime exitTime) {
+        this.id = id;
         this.vPlate = vPlate;
         this.vColor = vColor;
+        this.vType = vType;
         this.entranceTime = entranceTime;
         this.exitTime = exitTime;
     }
@@ -21,16 +41,20 @@ public class VehicleModel {
 
     }
 
-    public String getvType() {
-        return vType;
+    public Integer getId() {
+        return id;
     }
 
     public String getvPlate() {
         return vPlate;
     }
 
-    public Integer getvColor() {
+    public ColorModel getvColor() {
         return vColor;
+    }
+
+    public TypeModel getvType() {
+        return vType;
     }
 
     public LocalDateTime getEntranceTime() {
@@ -41,16 +65,20 @@ public class VehicleModel {
         return exitTime;
     }
 
-    public void setvType(String vType) {
-        this.vType = vType;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public void setvPlate(String vPlate) {
         this.vPlate = vPlate;
     }
 
-    public void setvColor(Integer vColor) {
+    public void setvColor(ColorModel vColor) {
         this.vColor = vColor;
+    }
+
+    public void setvType(TypeModel vType) {
+        this.vType = vType;
     }
 
     public void setEntranceTime(LocalDateTime entranceTime) {
