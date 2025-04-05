@@ -17,6 +17,10 @@ public class VehicleModel {
         this.exitTime = exitTime;
     }
 
+    public VehicleModel() {
+
+    }
+
     public String getvType() {
         return vType;
     }
