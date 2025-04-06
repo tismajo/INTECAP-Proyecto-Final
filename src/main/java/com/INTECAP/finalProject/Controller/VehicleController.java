@@ -57,8 +57,19 @@ public class VehicleController {
     }
 
     @PostMapping("/new-vehicle-form")
-    public String addVehicle(@ModelAttribute VehicleModel vehicle) {
+    public String addVehicle(@ModelAttribute VehicleModel vehicle, Model model) {
         try {
+            LocalDateTime now = LocalDateTime.now();
+            int hour = now.getHour();
+
+            if (hour < 7 || hour >= 21) {
+                model.addAttribute("error", "No se permite el ingreso de vehículos fuera del horario de 7:00 a.m. a 9:00 p.m.");
+                model.addAttribute("vehicle", vehicle);
+                model.addAttribute("colors", colorRepo.findAll());
+                model.addAttribute("types", typeRepo.findAll());
+                return "addVehicles";
+            }
+
             vehicle.setEntranceTime(LocalDateTime.now());
             vehicleRepo.save(vehicle);
         } catch (Exception e) {
