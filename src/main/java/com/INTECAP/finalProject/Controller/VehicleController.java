@@ -34,34 +34,53 @@ public class VehicleController {
 
     @GetMapping("/display")
     public String displayVehicles(Model model) {
-        model.addAttribute("vehicles", vehicleRepo.findAll());
+        try {
+            model.addAttribute("vehicles", vehicleRepo.findAll());
+        } catch(Exception e) {
+            System.err.println("Error al intentar mostrar los vehículos: " + e.getMessage());
+            model.addAttribute("error", "no se pudieron cargar los vehículos");
+        }
         return "showVehicles";
     }
 
     @GetMapping("/add")
     public String showForm(Model model) {
-        model.addAttribute("vehicle", new VehicleModel());
-        model.addAttribute("colors", colorRepo.findAll());
-        model.addAttribute("types", typeRepo.findAll());
+        try {
+            model.addAttribute("vehicle", new VehicleModel());
+            model.addAttribute("colors", colorRepo.findAll());
+            model.addAttribute("types", typeRepo.findAll());
+        } catch (Exception e) {
+            System.err.println("Error loading form data: " + e.getMessage());
+            model.addAttribute("error", "Could not load form data.");
+        }
         return "addVehicles";
     }
 
     @PostMapping("/new-vehicle-form")
     public String addVehicle(@ModelAttribute VehicleModel vehicle) {
-        vehicle.setEntranceTime(LocalDateTime.now());
-        vehicleRepo.save(vehicle);
+        try {
+            vehicle.setEntranceTime(LocalDateTime.now());
+            vehicleRepo.save(vehicle);
+        } catch (Exception e) {
+            System.err.println("Error saving new vehicle: " + e.getMessage());
+            return "redirect:/park-station/add?error=true";
+        }
         return "redirect:/park-station/display";
     }
 
     @PostMapping("/mark-exit/{id}")
     public String markExit(@PathVariable("id") Integer id) {
-        Optional<VehicleModel> optionalVehicle = vehicleRepo.findById(id);
-        if (optionalVehicle.isPresent()) {
-            VehicleModel vehicle = optionalVehicle.get();
-            if (vehicle.getExitTime() == null) {
-                vehicle.setExitTime(LocalDateTime.now());
-                vehicleRepo.save(vehicle);
+        try {
+            Optional<VehicleModel> optionalVehicle = vehicleRepo.findById(id);
+            if (optionalVehicle.isPresent()) {
+                VehicleModel vehicle = optionalVehicle.get();
+                if (vehicle.getExitTime() == null) {
+                    vehicle.setExitTime(LocalDateTime.now());
+                    vehicleRepo.save(vehicle);
+                }
             }
+        } catch (Exception e) {
+            System.err.println("Error marking vehicle exit: " + e.getMessage());
         }
         return "redirect:/park-station/display";
     }
