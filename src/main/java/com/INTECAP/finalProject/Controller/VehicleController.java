@@ -35,7 +35,8 @@ public class VehicleController {
     @GetMapping("/display")
     public String displayVehicles(Model model) {
         try {
-            model.addAttribute("vehicles", vehicleRepo.findAll());
+            List<VehicleModel> activeVehicles = vehicleRepo.findByExitTimeIsNull();
+            model.addAttribute("vehicles", activeVehicles);
         } catch(Exception e) {
             System.err.println("Error al intentar mostrar los vehículos: " + e.getMessage());
             model.addAttribute("error", "no se pudieron cargar los vehículos");
