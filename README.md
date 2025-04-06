@@ -1,3 +1,6 @@
+# Traducción
+- [English] ([README.en.md](README.en.md))
+---
 # 🚗 Sistema de Gestión de Parqueo
 
 Proyecto final desarrollado con **Spring Boot**, que implementa una API REST y una interfaz web básica para gestionar el ingreso y salida de vehículos en un parqueo.
